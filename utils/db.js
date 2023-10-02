@@ -1,6 +1,6 @@
 /*eslint-disable*/
 
-import { MongoClient } from "mongodb/lib/mongo_client";
+import { MongoClient } from "mongodb";
 
 const HOST = process.env.DB_HOST || "localhost";
 const PORT = process.env.DB_PORT || 27017;
