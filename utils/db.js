@@ -1,6 +1,6 @@
 /*eslint-disable*/
 import crypto from "crypto";
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
 
 const HOST = process.env.DB_HOST || "localhost";
 const PORT = process.env.DB_PORT || 27017;
@@ -48,6 +48,13 @@ class DBClient {
   async findUser(email) {
     const users = this.db.collection("users");
     const user = await users.findOne({ email: email });
+    return user;
+  }
+
+  async findUserById(userId) {
+    const users = this.db.collection("users");
+    const searchId = new ObjectId(userId);
+    const user = await users.findOne({ _id: searchId });
     return user;
   }
 

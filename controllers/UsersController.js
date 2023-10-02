@@ -1,4 +1,5 @@
 /*eslint-disable*/
+import redisClient from "../utils/redis";
 import dbClient from "../utils/db";
 
 class UsersController {
@@ -17,6 +18,16 @@ class UsersController {
         const result = await dbClient.insertUser(email, password);
         response.status(201).json({ id: result.insertedId, email: email });
       }
+    }
+  }
+  static async getMe(request, response) {
+    const token = request.headers["x-token"];
+    const userId = await redisClient.get(`auth_${token}`);
+    if (!userId) {
+      response.status(401).json({ error: "Unauthorized" });
+    } else {
+      const user = await dbClient.findUserById(userId);
+      response.status(200).json({ id: userId, email: user.email });
     }
   }
 }
