@@ -1,4 +1,4 @@
-import { RedisClient } from "redis";
+import { createClient } from "redis";
 import { promisify } from "util";
 
 // Class RedisClient containing a constructor
@@ -22,21 +22,21 @@ class RedisClient {
 
   //   an asynchronous function get that takes a string key as argument and returns the Redis value stored for this key
   async get(key) {
-    const redisGet = promisfy(this.client.get).bind(this.client);
+    const redisGet = promisify(this.client.get).bind(this.client);
     const value = await redisGet(key);
     return value;
   }
 
   //   Set key vlue pair to redis server
   async set(key, value, time) {
-    const redisSet = promisfy(this.client.set).bind(this.client);
+    const redisSet = promisify(this.client.set).bind(this.client);
     await redisSet(key, value);
     await this.client.expire(key, time);
   }
 
   //   an asynchronous function del that takes a string key as argument and remove the value in Redis for this key
   async del(key) {
-    const redisDel = promisfy(this.client.del).bind(this.client);
+    const redisDel = promisify(this.client.del).bind(this.client);
     await redisDel(key);
   }
 }
