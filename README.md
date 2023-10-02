@@ -11,5 +11,5 @@ The objective is to build a simple platform to upload and view files:
 - Generate thumbnails for images
 
 # Authors
-Samuel Senerwa
+Samuel Senerwa <br>
 Samuel Mugane
