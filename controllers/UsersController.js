@@ -27,7 +27,7 @@ class UsersController {
       response.status(401).json({ error: "Unauthorized" });
     } else {
       const user = await dbClient.findUserById(userId);
-      response.status(200).json({ id: userId, email: user.email });
+      response.json({ id: userId, email: user.email });
     }
   }
 }
