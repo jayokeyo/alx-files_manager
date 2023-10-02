@@ -1,5 +1,5 @@
 /*eslint-disable*/
-
+import crypto from "crypto";
 import { MongoClient } from "mongodb";
 
 const HOST = process.env.DB_HOST || "localhost";
@@ -44,6 +44,23 @@ class DBClient {
     const files = this.db.collection("files");
     const filesNum = await files.countDocuments();
     return filesNum;
+  }
+  async findUser(email) {
+    const users = this.db.collection("users");
+    const user = await users.findOne({ email: email });
+    return user;
+  }
+
+  async insertUser(email, password) {
+    const users = this.db.collection("users");
+    const sha1Hash = crypto.createHash("sha1");
+    sha1Hash.update(password);
+    const hashedPass = sha1Hash.digest("hex");
+    const result = await users.insertOne({
+      email: email,
+      password: hashedPass,
+    });
+    return result;
   }
 }
 
