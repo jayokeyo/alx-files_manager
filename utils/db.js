@@ -1,8 +1,10 @@
-import MongoClient, { MongoClient } from "mongodb/lib/mongo_client";
+/*eslint-disable*/
+
+import { MongoClient } from "mongodb/lib/mongo_client";
 
 const HOST = process.env.DB_HOST || "localhost";
 const PORT = process.env.DB_PORT || 27017;
-const DATABSE = process.env.DB_DATABASE || "files_manager";
+const DATABASE = process.env.DB_DATABASE || "files_manager";
 const url = `mongodb://${HOST}:${PORT}`;
 
 // class DBClient containing a constructor
