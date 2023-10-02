@@ -1,4 +1,5 @@
 import { RedisClient } from "redis";
+import { promisify } from "util";
 
 // Class RedisClient containing a constructor
 
