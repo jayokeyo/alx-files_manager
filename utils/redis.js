@@ -1,3 +1,5 @@
+/*eslint-disable*/
+
 import { createClient } from "redis";
 import { promisify } from "util";
 
