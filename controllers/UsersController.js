@@ -1,7 +1,7 @@
 /*eslint-disable*/
 import dbClient from "../utils/db";
 
-class UserController {
+class UsersController {
   static async postNew(request, response) {
     const email = request.body.email;
     const password = request.body.password;
@@ -21,4 +21,4 @@ class UserController {
   }
 }
 
-module.exports = UserController;
+module.exports = UsersController;
