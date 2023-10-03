@@ -5,7 +5,7 @@ import dbClient from "../utils/db";
 import { v4 as uuidv4 } from "uuid";
 import redisClient from "../utils/redis";
 
-class FileController {
+class FilesController {
   static async postUpload(request, response) {
     const token = request.headers["x-token"];
     const userId = await redisClient.get(`auth_${token}`);
@@ -71,4 +71,4 @@ class FileController {
   }
 }
 
-module.exports = FileController;
+module.exports = FilesController;
