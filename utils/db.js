@@ -69,7 +69,7 @@ class DBClient {
     });
     return result;
   }
-  async getParent(parentId = 0) {
+  async getParent(parentId = "0") {
     const files = this.db.collection("files");
     const searchId = new ObjectId(parentId);
     const parent = await files.findOne({ _id: searchId });
@@ -92,7 +92,7 @@ class DBClient {
         name: name,
         type: type,
         isPublic: isPublic,
-        parentId: parentId === 0 ? 0 : new ObjectId(parentId),
+        parentId: parentId === 0 ? parentId.toString() : new ObjectId(parentId),
       });
     } else {
       results = await files.insertOne({
@@ -100,18 +100,18 @@ class DBClient {
         name: name,
         type: type,
         isPublic: isPublic,
-        parentId: parentId === 0 ? 0 : new ObjectId(parentId),
+        parentId: parentId === 0 ? parentId.toString() : new ObjectId(parentId),
         localPath: localPath,
       });
     }
     const result = results.ops[0];
     const file = {
       id: result._id,
-      userId: result.userId.toString(),
+      userId: result.userId,
       name: result.name,
       type: result.type,
       isPublic: result.isPublic,
-      parentId: result.parentId.toString(),
+      parentId: result.parentId,
     };
     return file;
   }
