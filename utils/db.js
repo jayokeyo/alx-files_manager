@@ -69,7 +69,27 @@ class DBClient {
     });
     return result;
   }
+  async getParent(parentId) {
+    const files = this.db.collection("files");
+    const searchId = new ObjectId(parentId);
+    const parent = await files.findOne({ _id: searchId });
+    return parent;
+  }
+
+  async addFileToCollection(userId, name, type, isPublic = false, parentId = 0, localPath) {
+    const files = this.db.collection("files");
+    const result = await files.insertOne({
+      userId: userId,
+      name: name,
+      type: type,
+      isPublic: isPublic,
+      parentId: parentId,
+      localPath: localPath,
+    });
+    return result;
+  }
 }
+
 
 const dbClient = new DBClient();
 module.exports = dbClient;
