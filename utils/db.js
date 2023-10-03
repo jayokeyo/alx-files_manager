@@ -69,7 +69,7 @@ class DBClient {
     });
     return result;
   }
-  async getParent(parentId = "0") {
+  async getParent(parentId) {
     const files = this.db.collection("files");
     const searchId = new ObjectId(parentId);
     const parent = await files.findOne({ _id: searchId });
