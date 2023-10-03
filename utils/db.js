@@ -72,7 +72,7 @@ class DBClient {
   async getParent(parentId) {
     const files = this.db.collection("files");
     const searchId = new ObjectId(parentId);
-    const parent = await files.findOne({ _id: searchId });
+    const parent = await files.findOne({ parentId: searchId });
     return parent;
   }
 
