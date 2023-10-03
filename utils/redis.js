@@ -29,7 +29,7 @@ class RedisClient {
     return value;
   }
 
-  //   Set key vlue pair to redis server
+  //   Set key value pair to redis server
   async set(key, value, time) {
     const redisSet = promisify(this.client.set).bind(this.client);
     await redisSet(key, value);
