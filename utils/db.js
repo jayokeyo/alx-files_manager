@@ -92,7 +92,7 @@ class DBClient {
         name: name,
         type: type,
         isPublic: isPublic,
-        parentId: parentId === 0 ? parentId.toString() : new ObjectId(parentId),
+        parentId: parentId === 0 ? parentId : new ObjectId(parentId),
       });
     } else {
       results = await files.insertOne({
@@ -100,7 +100,7 @@ class DBClient {
         name: name,
         type: type,
         isPublic: isPublic,
-        parentId: parentId === 0 ? parentId.toString() : new ObjectId(parentId),
+        parentId: parentId === 0 ? parentId : new ObjectId(parentId),
         localPath: localPath,
       });
     }
