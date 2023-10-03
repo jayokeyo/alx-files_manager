@@ -32,8 +32,8 @@ class FilesController {
         const parent = await dbClient.getParent(parentId);
         if (!parent) {
           response.status(400).json({ error: "Parent not found" });
-        } 
-	if (parent.type != "folder") {
+        }
+        if (parent.type != "folder") {
           response.status(400).json({ error: "Parent is not a folder" });
         }
       }
@@ -69,6 +69,68 @@ class FilesController {
         response.status(201).json(result);
       }
     }
+  }
+  static async getShow(request, response) {
+    const user = await FilesController.getUser(request);
+    if (!user) {
+      return response.status(401).json({ error: "Unauthorized" });
+    }
+
+    const fileId = request.params.id;
+    const files = dbClient.db.collection("files");
+    const idObject = new ObjectID(fileId);
+    const file = await files.findOne({ _id: idObject, userId: user._id });
+    if (!file) {
+      return response.status(404).json({ error: "Not Found" });
+    }
+    return response.status(200).json(file);
+  }
+
+  static async getIndex(request, response) {
+    const user = await FilesController.getUser(request);
+    if (!user) {
+      return response.status(401).json({ error: "Unauthorized" });
+    }
+    const { parentId, page } = request.query;
+    const pageNum = page || 0;
+    const files = dbClient.db.collection("files");
+    let query;
+    if (!parentId) {
+      query = { userId: user._id };
+    } else {
+      query = { userId: user._id, parentId: ObjectID(parentId) };
+    }
+    files
+      .aggregate([
+        { $match: query },
+        { $sort: { _id: -1 } },
+        {
+          $facet: {
+            metadata: [
+              { $count: "total" },
+              { $addFields: { page: parseInt(pageNum, 10) } },
+            ],
+            data: [{ $skip: 20 * parseInt(pageNum, 10) }, { $limit: 20 }],
+          },
+        },
+      ])
+      .toArray((err, result) => {
+        if (result) {
+          const final = result[0].data.map((file) => {
+            const tmpFile = {
+              ...file,
+              id: file._id,
+            };
+            delete tmpFile._id;
+            delete tmpFile.localPath;
+            return tmpFile;
+          });
+          return response.status(200).json(final);
+        }
+        console.log("Error Occured");
+        return response.status(404).json({ error: "Not Found" });
+      });
+    return null;
   }
 }
 
