@@ -76,10 +76,17 @@ class DBClient {
     return parent;
   }
 
-  async addToFilesCollection(userId, name, type, isPublic = false, parentId = 0, localPath) {
+  async addToFilesCollection(
+    userId,
+    name,
+    type,
+    isPublic = false,
+    parentId = 0,
+    localPath
+  ) {
     let results;
     const files = this.db.collection("files");
-    if (type === 'folder') {
+    if (type === "folder") {
       results = await files.insertOne({
         userId: new ObjectId(userId),
         name: name,
@@ -104,12 +111,11 @@ class DBClient {
       name: result.name,
       type: result.type,
       isPublic: result.isPublic,
-      parentId: result.parentId.toString()
-    }
+      parentId: result.parentId.toString(),
+    };
     return file;
   }
 }
-
 
 const dbClient = new DBClient();
 module.exports = dbClient;

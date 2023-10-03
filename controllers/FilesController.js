@@ -1,10 +1,9 @@
 /*eslint-disable*/
 import fs from "fs";
 import path from "path";
-import dbClient from "../utils/db"
+import dbClient from "../utils/db";
 import { v4 as uuidv4 } from "uuid";
 import redisClient from "../utils/redis";
-
 
 class FileController {
   static async postUpload(request, response) {
