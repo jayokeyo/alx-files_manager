@@ -69,24 +69,44 @@ class DBClient {
     });
     return result;
   }
-  async getParent(parentId) {
+  async getParent(parentId = 0) {
     const files = this.db.collection("files");
     const searchId = new ObjectId(parentId);
     const parent = await files.findOne({ _id: searchId });
     return parent;
   }
 
-  async addFileToCollection(userId, name, type, isPublic = false, parentId = 0, localPath) {
+  async addToFilesCollection(userId, name, type, isPublic = false, parentId = 0, localPath) {
+    let results;
     const files = this.db.collection("files");
-    const result = await files.insertOne({
-      userId: userId,
-      name: name,
-      type: type,
-      isPublic: isPublic,
-      parentId: parentId,
-      localPath: localPath,
-    });
-    return result;
+    if (type === 'folder') {
+      results = await files.insertOne({
+        userId: new ObjectId(userId),
+        name: name,
+        type: type,
+        isPublic: isPublic,
+        parentId: parentId === 0 ? 0 : new ObjectId(parentId),
+      });
+    } else {
+      results = await files.insertOne({
+        userId: new ObjectId(userId),
+        name: name,
+        type: type,
+        isPublic: isPublic,
+        parentId: parentId === 0 ? 0 : new ObjectId(parentId),
+        localPath: localPath,
+      });
+    }
+    const result = results.ops[0];
+    const file = {
+      id: result._id,
+      userId: result.userId.toString(),
+      name: result.name,
+      type: result.type,
+      isPublic: result.isPublic,
+      parentId: result.parentId.toString()
+    }
+    return file;
   }
 }
 

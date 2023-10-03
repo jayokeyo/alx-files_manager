@@ -1,10 +1,10 @@
 /*eslint-disable*/
-import redisClient from "../utils/redis";
-import dbClient from "../utils/db";
-import process from "process";
 import fs from "fs";
 import path from "path";
+import dbClient from "../utils/db"
 import { v4 as uuidv4 } from "uuid";
+import redisClient from "../utils/redis";
+
 
 class FileController {
   static async postUpload(request, response) {
@@ -38,7 +38,7 @@ class FileController {
         }
       }
       if (type === "folder") {
-        const result = await dbClient.addFileToCollection(
+        const result = await dbClient.addToFilesCollection(
           userId,
           name,
           type,
@@ -49,7 +49,7 @@ class FileController {
       } else {
         const fileData = Buffer.from(data, "base64");
         const filename = uuidv4();
-        const folderPath = process.env("FOLDER_PATH") || "/tmp/files_manager";
+        const folderPath = process.env.FOLDER_PATH || "/tmp/files_manager";
         const localPath = path.join(folderPath, filename);
         fs.mkdir(folderPath, { recursive: true }, (err) => {
           if (err) throw err;
@@ -58,7 +58,7 @@ class FileController {
           });
         });
 
-        const result = await dbClient.addFileToCollection(
+        const result = await dbClient.addToFilesCollection(
           userId,
           name,
           type,
