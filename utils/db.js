@@ -111,7 +111,7 @@ class DBClient {
       name: result.name,
       type: result.type,
       isPublic: result.isPublic,
-      parentId: result.parentId === "0" ? parseInt(result.parentId, 10) : result.parentId,
+      parentId: result.parentId,
     };
     return file;
   }
