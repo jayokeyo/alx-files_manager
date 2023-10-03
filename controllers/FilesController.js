@@ -32,7 +32,8 @@ class FilesController {
         const parent = await dbClient.getParent(parentId);
         if (!parent) {
           response.status(400).json({ error: "Parent not found" });
-        } else if (parent.type != "folder") {
+        } 
+	if (parent.type != "folder") {
           response.status(400).json({ error: "Parent is not a folder" });
         }
       }
